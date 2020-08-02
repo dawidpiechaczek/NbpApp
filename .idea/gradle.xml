@@ -15,6 +15,9 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/ui" />
+            <option value="$PROJECT_DIR$/table" />
+            <option value="$PROJECT_DIR$/table/data" />
+            <option value="$PROJECT_DIR$/table/ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

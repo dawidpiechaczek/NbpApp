@@ -1,19 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/common-android.gradle"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.0"
-
     defaultConfig {
         applicationId "pl.piechaczek.dawid.nbpapp"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
