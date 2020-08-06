@@ -17,9 +17,11 @@ import pl.piechaczek.dawid.nbpapp.R
 import pl.piechaczek.dawid.nbpapp.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(
-    MainViewModel::class.java), OnSegmentChangeListener {
+    MainViewModel::class.java
+), OnSegmentChangeListener {
 
     override val compositeDisposable = CompositeDisposable()
+    private var group: SegmentedButtonGroup? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +34,27 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(
             .subscribeBy(onNext = this::executeEffects)
             .addTo(compositeDisposable)
 
+        viewModel.observeState()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onNext = this::executeState)
+            .addTo(compositeDisposable)
+
         viewModel.onAction(MainViewAction.ShowToast)
             .subscribeTo(compositeDisposable)
     }
 
+    private fun executeState(state: MainViewState) {
+        group?.setCurrentItemIndex(state.selectedSegment)
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
+
     private fun initSegmentedButtonGroup() {
-        val group = SegmentedButtonGroup(
+        group = SegmentedButtonGroup(
             listOf(
                 SegmentedButtonGroup.SegmentedButton(
                     "Tabela A",
@@ -54,7 +71,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(
     }
 
     private fun executeEffects(effect: MainViewEffect) {
-        Toast.makeText(applicationContext, "Blabla", Toast.LENGTH_LONG).show()
+        when (effect) {
+            is MainViewEffect.Table -> Toast.makeText(
+                applicationContext,
+                effect.table.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     override fun onSegmentChange(previousItemIndex: Int, newItemIndex: Int) {
@@ -63,6 +86,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(
             "previous: $previousItemIndex, next: $newItemIndex",
             Toast.LENGTH_LONG
         ).show()
+        viewModel.onAction(MainViewAction.SegmentChanged(newItemIndex))
+            .subscribeTo(compositeDisposable)
     }
 
     override fun inflateBinding(inflater: LayoutInflater): ActivityMainBinding =

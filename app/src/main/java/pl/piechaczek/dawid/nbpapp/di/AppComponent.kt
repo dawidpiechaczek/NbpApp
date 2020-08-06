@@ -12,6 +12,7 @@ import pl.piechaczek.dawid.nbpapp.app.NbpApp
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
+        NetworkModule::class,
         ActivityModule::class,
         ViewModelFactoryModule::class,
         CoreModule::class

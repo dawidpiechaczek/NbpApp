@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.piechaczek.dawid.nbpapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.NbpApp"
         android:allowBackup="true"

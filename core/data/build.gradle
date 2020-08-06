@@ -3,4 +3,19 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${libVersions.kotlin}"
+    api "com.jakewharton.timber:timber:${libVersions.timber}"
+
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.5.0'
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.5.0'
+
+    api 'com.squareup.moshi:moshi:1.7.0'
+    api 'com.squareup.moshi:moshi-adapters:1.7.0'
+    api 'com.squareup.retrofit2:converter-moshi:2.4.0'
+
+    api 'com.squareup.okhttp3:okhttp:4.3.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.3.0'
+
+    api 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 }

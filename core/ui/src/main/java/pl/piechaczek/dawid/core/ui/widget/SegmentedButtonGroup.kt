@@ -63,6 +63,10 @@ class SegmentedButtonGroup @JvmOverloads constructor(
 
     fun getItemsCount(): Int = segmentedButtons.size
     fun getCurrentItemIndex(): Int = currentPosition
+    fun setCurrentItemIndex(newItemIndex: Int) {
+        currentPosition = newItemIndex
+    }
+
     fun getCurrentItem(): SegmentedButton = segmentedButtons[currentPosition]
     fun getItemAt(index: Int): SegmentedButton = segmentedButtons[index]
 
@@ -70,5 +74,5 @@ class SegmentedButtonGroup @JvmOverloads constructor(
     data class SegmentedButton(val text: String, @ColorRes val color: Int) : Parcelable
 
     @Parcelize
-    data class SavedState(val position: Int, val state: Parcelable?): Parcelable
+    data class SavedState(val position: Int, val state: Parcelable?) : Parcelable
 }
