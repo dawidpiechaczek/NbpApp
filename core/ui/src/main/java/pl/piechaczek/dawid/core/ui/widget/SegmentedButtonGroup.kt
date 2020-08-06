@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.core.ui
+package pl.piechaczek.dawid.core.ui.widget
 
 import android.content.Context
 import android.os.Parcelable
@@ -26,7 +26,10 @@ class SegmentedButtonGroup @JvmOverloads constructor(
 
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
-        return SavedState(currentPosition, superState)
+        return SavedState(
+            currentPosition,
+            superState
+        )
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {

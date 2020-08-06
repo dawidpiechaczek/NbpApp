@@ -1,6 +1,11 @@
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+configurations {
+    ktlint
+}
 
 android {
     compileSdkVersion 29
@@ -14,4 +19,43 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+}
+
+dependencies {
+    testImplementation "org.mockito:mockito-inline:${libVersions.mockitoCore}"
+    testImplementation "org.mockito:mockito-core:${libVersions.mockitoCore}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${libVersions.mockitoKotlin}"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${libVersions.coroutinesCore}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libVersions.coroutinesAndroid}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${libVersions.coroutinesCore}"
+
+    implementation "io.reactivex.rxjava2:rxandroid:${libVersions.rxVersion}"
+    implementation("io.reactivex.rxjava2:rxkotlin:${libVersions.rxKotlin}")
+
+    kapt "com.google.dagger:dagger-compiler:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger:${libVersions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger-android:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${libVersions.dagger}"
+
+    ktlint "com.pinterest:ktlint:${libVersions.ktlint}"
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
+    // to generate report in checkstyle format prepend following args:
+    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // see https://github.com/pinterest/ktlint#usage for more
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
 }

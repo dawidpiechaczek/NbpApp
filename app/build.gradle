@@ -6,6 +6,10 @@ android {
         applicationId "pl.piechaczek.dawid.nbpapp"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false

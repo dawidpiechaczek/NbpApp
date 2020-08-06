@@ -6,47 +6,45 @@ buildscript {
                 versionTarget         : 29,
                 versionSdk            : 29,
                 versionBuildTools     : "30.0.0",
-                applicationPackageName: "pl.orange.orangetv",
-                applicationVersionName: "1.0.11",
-                applicationVersionCode: 301031
+                applicationPackageName: "pl.piechaczek.dawid.nbpapp",
+                applicationVersionName: "1.0.0",
+                applicationVersionCode: 1
         ]
 
         libVersions = [
-                appCompat           : '1.1.0',
-                playVersion         : '17.0.0',
-                firebaseVersion     : '17.2.3',
-                daggerVersion       : '2.21',
-                retrofitVersion     : '2.5.0',
-                glideVersion        : '4.11.0',
-                constraintVersion   : '1.1.3',
-                work                : "2.3.4",
-                leanbackVersion     : "1.1.0-alpha03",
-                annimonStreamVersion: "1.2.1",
-                rxVersion           : "2.1.1",
-                exoplayerVersion    : "2.11.3",
-                kotlin              : "1.3.72",
-                mockitoCore         : "3.3.3",
-                mockitoKotlin       : "2.2.0",
-                coroutinesCore      : "1.3.5",
-                coroutinesAndroid   : "1.3.5",
-                dagger              : "2.27",
-                ktlint              : "0.36.0",
-                cardView            : '1.0.0',
-                viewPager           : '1.0.0',
-                notificationsVersion: "20.1.0",
-                tvProvider          : "1.0.0"
+                appCompat        : '1.2.0',
+                daggerVersion    : '2.21',
+                retrofitVersion  : '2.5.0',
+                glideVersion     : '4.11.0',
+                constraintVersion: '1.1.3',
+                work             : "2.3.4",
+                rxVersion        : "2.1.1",
+                rxKotlin         : "2.0.0",
+                kotlin           : "1.3.72",
+                mockitoCore      : "3.3.3",
+                mockitoKotlin    : "2.2.0",
+                coroutinesCore   : "1.3.5",
+                coroutinesAndroid: "1.3.5",
+                dagger           : "2.27",
+                ktlint           : "0.36.0",
+                cardView         : '1.0.0',
+                viewPager        : '1.0.0',
+                detekt           : "1.7.0-beta2"
         ]
     }
 
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${libVersions.kotlin}"
-
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${libVersions.detekt}"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
