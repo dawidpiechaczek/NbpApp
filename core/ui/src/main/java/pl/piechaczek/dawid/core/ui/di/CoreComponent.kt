@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.core.ui
+package pl.piechaczek.dawid.core.ui.di
 
 import dagger.Component
 import pl.piechaczek.dawid.core.data.di.ApiServiceModule

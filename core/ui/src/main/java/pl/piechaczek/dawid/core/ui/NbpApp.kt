@@ -1,8 +1,7 @@
 package pl.piechaczek.dawid.core.ui
 
 import android.app.Application
-import dagger.android.AndroidInjector
-import dagger.android.support.DaggerApplication
+import pl.piechaczek.dawid.core.ui.di.CoreComponentProvider
 import timber.log.Timber
 
 import timber.log.Timber.DebugTree

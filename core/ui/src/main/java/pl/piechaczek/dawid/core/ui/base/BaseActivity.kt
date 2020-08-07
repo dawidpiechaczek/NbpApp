@@ -6,9 +6,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
-import pl.piechaczek.dawid.core.ui.CoreComponentProvider
+import pl.piechaczek.dawid.core.ui.di.CoreComponentProvider
 import javax.inject.Inject
 
 abstract class BaseActivity<TViewModel : ViewModel, TBinding : ViewBinding> constructor(

@@ -17,7 +17,9 @@ import pl.piechaczek.dawid.core.ui.widget.SegmentedButtonGroup
 import pl.piechaczek.dawid.table.ui.databinding.FragmentTableBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
 
-class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding>(TableViewModel::class.java), OnSegmentChangeListener {
+class TableFragment :
+    BaseFragment<TableViewModel, FragmentTableBinding>(TableViewModel::class.java),
+    OnSegmentChangeListener {
 
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -98,5 +100,9 @@ class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding>(TableVi
 
     override fun handleInjection() {
         ComponentProvider.createComponent(this)
+    }
+
+    companion object {
+        fun args(): Bundle = Bundle()
     }
 }

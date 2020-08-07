@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.core.ui
+package pl.piechaczek.dawid.core.ui.di
 
 object CoreComponentProvider {
 
@@ -6,8 +6,7 @@ object CoreComponentProvider {
 
     fun createComponent(): CoreComponent {
 
-        component = DaggerCoreComponent
-            .factory()
+        component = DaggerCoreComponent.factory()
             .create()
 
         return component
@@ -15,7 +14,7 @@ object CoreComponentProvider {
 
     fun getComponent(): CoreComponent {
 
-        if (!::component.isInitialized)
+        if (!CoreComponentProvider::component.isInitialized)
             throw IllegalStateException("component should be initialized earlier")
 
         return component

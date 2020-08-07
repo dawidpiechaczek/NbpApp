@@ -1,8 +1,8 @@
 package pl.piechaczek.dawid.table.ui.di
 
 import dagger.Component
-import pl.piechaczek.dawid.core.ui.CoreComponent
-import pl.piechaczek.dawid.core.ui.DaggerFragmentComponent
+import pl.piechaczek.dawid.core.ui.di.CoreComponent
+import pl.piechaczek.dawid.core.ui.di.DaggerFragmentComponent
 import pl.piechaczek.dawid.core.ui.base.ViewModelFactoryModule
 import pl.piechaczek.dawid.table.data.di.TableUseCaseModule
 import pl.piechaczek.dawid.table.ui.TableFragment

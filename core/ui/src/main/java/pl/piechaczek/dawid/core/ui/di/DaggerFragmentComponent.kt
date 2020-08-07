@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.core.ui
+package pl.piechaczek.dawid.core.ui.di
 
 import dagger.BindsInstance
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
