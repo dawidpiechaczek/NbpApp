@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply from: "$rootDir/common-android.gradle"
+
+android {
+    ext.apiUrl = "API_URL"
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    buildTypes.each{
+        it.buildConfigField "String", apiUrl, "\"http://api.nbp.pl/api/\""
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    api project(':core:data')
+
+    api 'androidx.core:core-ktx:1.3.1'
+    api "androidx.recyclerview:recyclerview:${libVersions.recyclerView}"
+    api "androidx.appcompat:appcompat:${libVersions.appCompat}"
+    api "androidx.constraintlayout:constraintlayout:${libVersions.constraintVersion}"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

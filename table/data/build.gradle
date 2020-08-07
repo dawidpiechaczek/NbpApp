@@ -1,0 +1,6 @@
+apply plugin: 'java-library'
+apply from: "$rootDir/common-kotlin.gradle"
+
+dependencies {
+    api project(':core:data')
+}
