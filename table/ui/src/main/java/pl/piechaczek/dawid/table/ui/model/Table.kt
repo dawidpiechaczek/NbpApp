@@ -1,18 +1,17 @@
 package pl.piechaczek.dawid.table.ui.model
 
-import pl.piechaczek.dawid.core.data.model.RatesModel
 import pl.piechaczek.dawid.core.data.model.TableModel
 
 data class Table(
     val type: Char,
     val number: String,
     val effectiveDate: String,
-    val rates: List<RatesModel>
+    val rates: List<Rate>
 )
 
 fun TableModel.map() = Table(
     type = table,
     number = no,
     effectiveDate = effectiveDate,
-    rates = rates
+    rates = rates.map { it.map(effectiveDate) }
 )

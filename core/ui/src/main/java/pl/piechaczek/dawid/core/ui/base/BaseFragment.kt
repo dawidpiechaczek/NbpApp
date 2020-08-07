@@ -22,7 +22,7 @@ abstract class BaseFragment<TViewModel : ViewModel, TBinding : ViewBinding> cons
 
     abstract val compositeDisposable: CompositeDisposable
 
-    val viewModel by lazy {
+    open val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(viewModelClass)
     }
 

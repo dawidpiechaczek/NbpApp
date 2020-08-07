@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.table.ui
+package pl.piechaczek.dawid.table.ui.table
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
@@ -6,16 +6,18 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.piechaczek.dawid.table.data.usecase.TableUseCase
+import pl.piechaczek.dawid.table.ui.di.TableScope
 import pl.piechaczek.dawid.table.ui.model.map
 import javax.inject.Inject
 
-abstract class TableViewModel : ViewModel() {
+internal abstract class TableViewModel : ViewModel() {
     abstract fun observeEffects(): Observable<TableViewEffect>
     abstract fun observeState(): Observable<TableViewState>
     abstract fun onAction(action: TableViewAction): Completable
 }
 
-class DefaultTableViewModel @Inject constructor(
+@TableScope
+internal class DefaultTableViewModel @Inject constructor(
     private val tableUseCase: TableUseCase
 ) : TableViewModel() {
 
@@ -28,21 +30,28 @@ class DefaultTableViewModel @Inject constructor(
 
     override fun onAction(action: TableViewAction): Completable =
         when (action) {
-            is TableViewAction.ShowToast -> showToast()
+            is TableViewAction.ShowToast -> showToast(action.tableType)
             is TableViewAction.SegmentChanged -> changeSegment(action.newItemIndex)
         }
 
     private fun changeSegment(newSegmentIndex: Int): Completable = Completable.fromCallable {
-        state.onNext(TableViewState(newSegmentIndex))
+        state.onNext(
+            state.value?.copy(selectedSegment = newSegmentIndex) ?: TableViewState(
+                newSegmentIndex
+            )
+        )
     }
 
-    private fun showToast(): Completable =
-        tableUseCase.getTable('A')
+    private fun showToast(tableType: Char): Completable =
+        tableUseCase.getTable(tableType)
             .flatMapCompletable {
-                val tables = it.map { it.map() }
-                effects.onNext(
-                    TableViewEffect.ShowTable(tables)
-                )
+                if (it.isNotEmpty()) {
+                    val rates = it[0].map().rates
+                    effects.onNext(
+                        TableViewEffect.ShowTable(rates)
+                    )
+                }
+
                 Completable.complete()
             }
 }

@@ -1,4 +1,4 @@
-package pl.piechaczek.dawid.core.ui
+package pl.piechaczek.dawid.core.ui.screen
 
 import android.os.Bundle
 import android.os.Parcelable

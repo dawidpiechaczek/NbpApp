@@ -3,7 +3,7 @@ package pl.piechaczek.dawid.nbpapp.di
 import dagger.Component
 import pl.piechaczek.dawid.core.ui.di.CoreComponent
 import pl.piechaczek.dawid.core.ui.di.DaggerActivityComponent
-import pl.piechaczek.dawid.core.ui.base.ViewModelFactoryModule
+import pl.piechaczek.dawid.core.ui.di.ViewModelFactoryModule
 import pl.piechaczek.dawid.nbpapp.main.MainActivity
 
 @Component(

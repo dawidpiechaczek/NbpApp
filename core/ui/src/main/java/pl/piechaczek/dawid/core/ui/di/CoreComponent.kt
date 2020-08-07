@@ -2,11 +2,11 @@ package pl.piechaczek.dawid.core.ui.di
 
 import dagger.Component
 import pl.piechaczek.dawid.core.data.di.ApiServiceModule
-import pl.piechaczek.dawid.core.data.service.NbpService
 import pl.piechaczek.dawid.core.data.di.NetworkModule
+import pl.piechaczek.dawid.core.data.service.NbpService
 import retrofit2.Retrofit
 
-@Component(modules = [CoreModule::class, ApiServiceModule::class, NetworkModule::class])
+@Component(modules = [CoreModule::class, ApiServiceModule::class, NetworkModule::class, ViewModelFactoryModule::class])
 interface CoreComponent {
 
     @Component.Factory

@@ -10,17 +10,27 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.parcel.Parcelize
 
 class SegmentedButtonGroup @JvmOverloads constructor(
-    private val segmentedButtons: List<SegmentedButton>,
-    private val onSegmentChangeListener: OnSegmentChangeListener,
     context: Context,
     attributes: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attributes, defStyleAttr) {
 
     private var currentPosition: Int = 0
+    private var onSegmentChangeListener: OnSegmentChangeListener? = null
+    private val segmentedButtons: MutableList<SegmentedButton> = mutableListOf()
 
     init {
         orientation = HORIZONTAL
+        initButtons()
+    }
+
+    fun setSegmentChangeListener(onSegmentChangeListener: OnSegmentChangeListener) {
+        this.onSegmentChangeListener = onSegmentChangeListener
+    }
+
+    fun setSegmentedButtons(segmentedButtons: List<SegmentedButton>) {
+        this.segmentedButtons.clear()
+        this.segmentedButtons.addAll(segmentedButtons)
         initButtons()
     }
 
@@ -49,10 +59,7 @@ class SegmentedButtonGroup @JvmOverloads constructor(
                     setBackgroundColor(ContextCompat.getColor(context, segmentedButton.color))
                     setOnClickListener {
                         val newPosition = segmentedButtons.indexOf(segmentedButton)
-                        onSegmentChangeListener.onSegmentChange(
-                            currentPosition,
-                            newPosition
-                        )
+                        onSegmentChangeListener?.onSegmentChange(currentPosition, newPosition)
                         currentPosition = newPosition
                     }
                 }.also {
@@ -71,7 +78,7 @@ class SegmentedButtonGroup @JvmOverloads constructor(
     fun getItemAt(index: Int): SegmentedButton = segmentedButtons[index]
 
     @Parcelize
-    data class SegmentedButton(val text: String, @ColorRes val color: Int) : Parcelable
+    data class SegmentedButton(val text: String, @ColorRes val color: Int, val tableType: Char) : Parcelable
 
     @Parcelize
     data class SavedState(val position: Int, val state: Parcelable?) : Parcelable

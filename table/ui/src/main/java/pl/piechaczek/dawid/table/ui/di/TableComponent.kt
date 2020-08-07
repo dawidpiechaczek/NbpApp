@@ -1,12 +1,14 @@
 package pl.piechaczek.dawid.table.ui.di
 
 import dagger.Component
+import pl.piechaczek.dawid.core.ui.di.ViewModelFactoryModule
 import pl.piechaczek.dawid.core.ui.di.CoreComponent
 import pl.piechaczek.dawid.core.ui.di.DaggerFragmentComponent
-import pl.piechaczek.dawid.core.ui.base.ViewModelFactoryModule
 import pl.piechaczek.dawid.table.data.di.TableUseCaseModule
-import pl.piechaczek.dawid.table.ui.TableFragment
+import pl.piechaczek.dawid.table.ui.table.TableFragment
+import pl.piechaczek.dawid.table.ui.root.SegmentedTableFragment
 
+@TableScope
 @Component(
     dependencies = [CoreComponent::class],
     modules = [
@@ -15,13 +17,16 @@ import pl.piechaczek.dawid.table.ui.TableFragment
         ViewModelFactoryModule::class
     ]
 )
-abstract class TableComponent : DaggerFragmentComponent<TableFragment>() {
+internal abstract class TableComponent : DaggerFragmentComponent<SegmentedTableFragment>() {
 
     @Component.Factory
-    abstract class Factory : DaggerFragmentComponent.Factory<TableComponent, TableFragment>() {
+    abstract class Factory :
+        DaggerFragmentComponent.Factory<TableComponent, SegmentedTableFragment>() {
 
-        override fun injectFragment(fragment: TableFragment, component: TableComponent) {
+        override fun injectFragment(fragment: SegmentedTableFragment, component: TableComponent) {
             component.inject(fragment)
         }
     }
+
+    abstract fun inject(fragment: TableFragment)
 }

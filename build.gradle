@@ -13,6 +13,7 @@ buildscript {
 
         libVersions = [
                 appCompat        : '1.2.0',
+                recyclerView     : '1.1.0',
                 daggerVersion    : '2.21',
                 retrofitVersion  : '2.5.0',
                 glideVersion     : '4.11.0',

@@ -3,12 +3,12 @@ package pl.piechaczek.dawid.nbpapp.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import io.reactivex.disposables.CompositeDisposable
-import pl.piechaczek.dawid.core.ui.FragmentScreen
+import pl.piechaczek.dawid.core.ui.screen.FragmentScreen
 import pl.piechaczek.dawid.core.ui.base.BaseActivity
 import pl.piechaczek.dawid.nbpapp.R
 import pl.piechaczek.dawid.nbpapp.databinding.ActivityMainBinding
 import pl.piechaczek.dawid.nbpapp.di.ComponentProvider
-import pl.piechaczek.dawid.table.ui.TableFragment
+import pl.piechaczek.dawid.table.ui.root.SegmentedTableFragment
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(MainViewModel::class.java) {
 
@@ -20,9 +20,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(MainViewMo
 
         replaceFragment(
             FragmentScreen(
-                TableFragment::class.java,
-                TableFragment.args(),
-                TableFragment::class.java.name
+                SegmentedTableFragment::class.java,
+                SegmentedTableFragment.args(),
+                SegmentedTableFragment::class.java.name
             )
         )
     }

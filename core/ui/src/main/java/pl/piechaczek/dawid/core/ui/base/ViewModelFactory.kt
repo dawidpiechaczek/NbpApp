@@ -21,4 +21,4 @@ class ViewModelFactory @Inject constructor(private val providers: ViewModelProvi
     }
 }
 
-private typealias ViewModelProviders =  Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+typealias ViewModelProviders =  Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
