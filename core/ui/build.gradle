@@ -2,8 +2,14 @@ apply plugin: 'com.android.library'
 apply from: "$rootDir/common-android.gradle"
 
 android {
+    ext.apiUrl = "API_URL"
+
     buildFeatures {
         viewBinding = true
+    }
+
+    buildTypes.each{
+        it.buildConfigField "String", apiUrl, "\"http://api.nbp.pl/api/\""
     }
 }
 

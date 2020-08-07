@@ -1,0 +1,62 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${libVersions.kotlin}"
+    implementation "com.jakewharton.timber:timber:${libVersions.timber}"
+
+    kapt "com.google.dagger:dagger-compiler:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger:${libVersions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger-android:${libVersions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${libVersions.dagger}"
+
+    api "io.reactivex.rxjava2:rxandroid:${libVersions.rxVersion}"
+    api "io.reactivex.rxjava2:rxkotlin:${libVersions.rxKotlin}"
+
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.5.0'
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.5.0'
+
+    api 'com.squareup.moshi:moshi:1.7.0'
+    api 'com.squareup.moshi:moshi-adapters:1.7.0'
+    api 'com.squareup.retrofit2:converter-moshi:2.4.0'
+
+    api 'com.squareup.okhttp3:okhttp:4.3.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.3.0'
+
+    api 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
+    testImplementation "org.mockito:mockito-inline:${libVersions.mockitoCore}"
+    testImplementation "org.mockito:mockito-core:${libVersions.mockitoCore}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${libVersions.mockitoKotlin}"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${libVersions.coroutinesCore}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libVersions.coroutinesAndroid}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${libVersions.coroutinesCore}"
+
+    ktlint "com.pinterest:ktlint:${libVersions.ktlint}"
+}
+
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
+    // to generate report in checkstyle format prepend following args:
+    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // see https://github.com/pinterest/ktlint#usage for more
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
+}

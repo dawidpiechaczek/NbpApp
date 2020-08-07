@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply from: "$rootDir/common-android.gradle"
 
 android {
-    ext.apiUrl = "API_URL"
-
     defaultConfig {
         applicationId "pl.piechaczek.dawid.nbpapp"
     }
@@ -18,13 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    buildTypes.each{
-        it.buildConfigField "String", apiUrl, "\"http://api.nbp.pl/api/\""
-    }
 }
 
 dependencies {
     implementation project(':core:ui')
-    implementation project(':core:data')
+    implementation project(':table:ui')
 }

@@ -1,0 +1,7 @@
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
+apply from: "$rootDir/common.gradle"
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
