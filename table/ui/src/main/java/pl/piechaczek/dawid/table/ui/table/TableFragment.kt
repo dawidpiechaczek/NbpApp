@@ -11,6 +11,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import pl.piechaczek.dawid.core.data.extension.subscribeTo
+import pl.piechaczek.dawid.core.ui.navigation.MainNavigator
 import pl.piechaczek.dawid.core.ui.adapter.BaseSimpleAdapter
 import pl.piechaczek.dawid.core.ui.adapter.SimpleAdapterItem
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
@@ -19,11 +20,14 @@ import pl.piechaczek.dawid.table.ui.databinding.FragmentTableBinding
 import pl.piechaczek.dawid.table.ui.databinding.ItemCurrencyBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
 import timber.log.Timber
+import javax.inject.Inject
 
 internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding>(
     TableViewModel::class.java
 ), OnSegmentChangeListener {
 
+    @Inject
+    lateinit var mainNavigator: MainNavigator
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
     lateinit var adapter: BaseSimpleAdapter<ItemCurrencyBinding, SimpleAdapterItem<ItemCurrencyBinding>>
 
@@ -70,9 +74,7 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
         when (effect) {
             is TableViewEffect.ShowTable -> {
                 val rates = effect.rates.map {
-                    CurrencyTableItem(
-                        it
-                    )
+                    CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(it.currencyName, it.code) }
                 }
                 adapter.replace(rates)
             }

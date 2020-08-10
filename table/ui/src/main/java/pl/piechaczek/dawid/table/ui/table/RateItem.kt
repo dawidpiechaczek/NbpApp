@@ -8,11 +8,11 @@ import pl.piechaczek.dawid.table.ui.R
 import pl.piechaczek.dawid.table.ui.databinding.ItemCurrencyBinding
 import pl.piechaczek.dawid.table.ui.model.Rate
 
-internal typealias OnSidePanelItemClickListener = (Rate, View) -> Unit
+internal typealias OnRateItemClickListener = () -> Unit
 
 data class CurrencyTableItem(
     val rate: Rate,
-    val onClickListener: OnSidePanelItemClickListener? = null
+    val onClickListener: OnRateItemClickListener? = null
 ) : SimpleAdapterItem<ItemCurrencyBinding> {
 
     override val type: Int
@@ -26,7 +26,7 @@ data class CurrencyTableItem(
         binding.code.text = rate.code
 
         binding.root.setOnClickListener {
-            onClickListener?.invoke(rate, it)
+            onClickListener?.invoke()
         }
     }
 

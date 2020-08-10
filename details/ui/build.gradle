@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+apply from: "$rootDir/common-android.gradle"
+
+android {
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    api project(':core:ui')
+    api project(':details:data')
+}
