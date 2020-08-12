@@ -5,6 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ abstract class DetailsViewModel : ViewModel() {
 internal class DefaultDetailsViewModel @Inject constructor() : DetailsViewModel() {
 
     private val effects = PublishSubject.create<DetailsViewEffect>()
-    private val state = BehaviorSubject.create<DetailsViewState>()
+    private val state = BehaviorSubject.createDefault(DetailsViewState())
 
     override fun observeEffects(): Observable<DetailsViewEffect> = effects.hide()
 
@@ -25,10 +26,33 @@ internal class DefaultDetailsViewModel @Inject constructor() : DetailsViewModel(
 
     override fun onAction(action: DetailsViewAction): Completable =
         when (action) {
-            is DetailsViewAction.ChangeDates -> changeDates(action.startDate, action.endDate)
+            is DetailsViewAction.StartDate -> changeStartDate(action.startDate)
+            is DetailsViewAction.EndDate -> changeEndDate(action.endDate)
+            is DetailsViewAction.OpenCalendarDialog -> openCalendarDialog(
+                state.value,
+                action.requestId
+            )
         }
 
-    private fun changeDates(startDate: ZonedDateTime, endDate: ZonedDateTime): Completable = Completable.fromCallable {
-        effects.onNext(DetailsViewEffect.ChangeDates(startDate.toString(), endDate.toString()))
+    private fun openCalendarDialog(value: DetailsViewState?, requestId: Int): Completable =
+        Completable.fromCallable {
+            val date = if (requestId == CALENDAR_START_DATE) {
+                value?.startDate
+            } else {
+                value?.endDate
+            }
+            effects.onNext(
+                DetailsViewEffect.OpenCalendarDialog(date, requestId)
+            )
+        }
+
+    private fun changeStartDate(startDate: LocalDateTime): Completable = Completable.fromCallable {
+        state.onNext(
+            state.value?.copy(startDate = startDate) ?: DetailsViewState(startDate = startDate)
+        )
+    }
+
+    private fun changeEndDate(endDate: LocalDateTime): Completable = Completable.fromCallable {
+        state.onNext(state.value?.copy(endDate = endDate) ?: DetailsViewState(endDate = endDate))
     }
 }

@@ -5,7 +5,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.piechaczek.dawid.table.ui.di.TableScope
 import javax.inject.Inject
 
 abstract class SegmentedTableViewModel : ViewModel() {
@@ -14,7 +13,6 @@ abstract class SegmentedTableViewModel : ViewModel() {
     abstract fun onAction(action: SegmentedTableViewAction): Completable
 }
 
-@TableScope
 internal class DefaultSegmentedViewModel @Inject constructor() : SegmentedTableViewModel() {
 
     private val effects = PublishSubject.create<SegmentedTableViewEffect>()

@@ -19,6 +19,7 @@ import pl.piechaczek.dawid.core.ui.widget.OnSegmentChangeListener
 import pl.piechaczek.dawid.table.ui.databinding.FragmentTableBinding
 import pl.piechaczek.dawid.table.ui.databinding.ItemCurrencyBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
+import pl.piechaczek.dawid.table.ui.model.Rate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,7 +34,6 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSegmentedButtonGroup()
         initEffectsAndState()
         initView()
     }
@@ -53,11 +53,7 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
         val tableType = arguments?.getChar(TABLE_TYPE)
         tableType?.let {
-            viewModel.onAction(
-                TableViewAction.ShowToast(
-                    it
-                )
-            )
+            viewModel.onAction(TableViewAction.GetInfoForTable(it))
                 .subscribeTo(compositeDisposable)
         }
     }
@@ -66,27 +62,30 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
     }
 
-    private fun initSegmentedButtonGroup() {
-
-    }
-
     private fun executeEffects(effect: TableViewEffect) {
         when (effect) {
-            is TableViewEffect.ShowTable -> {
-                val rates = effect.rates.map {
-                    CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(it.currencyName, it.code) }
-                }
-                adapter.replace(rates)
-            }
+            is TableViewEffect.ShowTable -> showTable(effect.rates)
+            is TableViewEffect.ShowProgress -> showProgress()
+            is TableViewEffect.HideProgress -> hideProgress()
         }
     }
 
+    private fun hideProgress() {
+        binding.progress.visibility = View.GONE
+    }
+
+    private fun showProgress() {
+        binding.progress.visibility = View.VISIBLE
+    }
+
+    private fun showTable(rates: List<Rate>) {
+        adapter.replace(rates.map {
+            CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(it.currencyName, it.code) }
+        })
+    }
+
     override fun onSegmentChange(previousItemIndex: Int, newItemIndex: Int) {
-        viewModel.onAction(
-            TableViewAction.SegmentChanged(
-                newItemIndex
-            )
-        )
+        viewModel.onAction(TableViewAction.SegmentChanged(newItemIndex))
             .subscribeTo(compositeDisposable)
     }
 

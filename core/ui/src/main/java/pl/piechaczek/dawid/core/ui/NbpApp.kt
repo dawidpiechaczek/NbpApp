@@ -1,6 +1,7 @@
 package pl.piechaczek.dawid.core.ui
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import pl.piechaczek.dawid.core.ui.di.CoreComponentProvider
 import pl.piechaczek.dawid.core.ui.navigation.MainNavigator
 import timber.log.Timber
@@ -15,6 +16,7 @@ class NbpApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+        AndroidThreeTen.init(this)
     }
 
     fun provideMainNavigator(mainNavigator: MainNavigator) {
