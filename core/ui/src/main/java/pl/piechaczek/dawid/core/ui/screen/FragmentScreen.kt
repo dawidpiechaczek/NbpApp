@@ -15,10 +15,10 @@ data class FragmentScreen @JvmOverloads constructor(
     val addToBackStack: Boolean = true
 ) : Parcelable {
 
-    private var animEnter = -1
-    private var animExit = -1
-    private var animPopEnter = -1
-    private var animPopExit = -1
+    var animEnter = -1
+    var animExit = -1
+    var animPopEnter = -1
+    var animPopExit = -1
 
     val hasAnimation
         get() = animEnter != -1 && animExit != -1

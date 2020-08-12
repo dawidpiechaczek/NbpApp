@@ -6,7 +6,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.piechaczek.dawid.table.data.usecase.TableUseCase
-import pl.piechaczek.dawid.table.ui.di.TableScope
 import pl.piechaczek.dawid.table.ui.model.map
 import javax.inject.Inject
 
@@ -16,7 +15,6 @@ internal abstract class TableViewModel : ViewModel() {
     abstract fun onAction(action: TableViewAction): Completable
 }
 
-@TableScope
 internal class DefaultTableViewModel @Inject constructor(
     private val tableUseCase: TableUseCase
 ) : TableViewModel() {
@@ -30,7 +28,7 @@ internal class DefaultTableViewModel @Inject constructor(
 
     override fun onAction(action: TableViewAction): Completable =
         when (action) {
-            is TableViewAction.ShowToast -> showToast(action.tableType)
+            is TableViewAction.GetInfoForTable -> showToast(action.tableType)
             is TableViewAction.SegmentChanged -> changeSegment(action.newItemIndex)
         }
 
@@ -44,6 +42,7 @@ internal class DefaultTableViewModel @Inject constructor(
 
     private fun showToast(tableType: Char): Completable =
         tableUseCase.getTable(tableType)
+            .doOnSubscribe { effects.onNext(TableViewEffect.ShowProgress) }
             .flatMapCompletable {
                 if (it.isNotEmpty()) {
                     val rates = it[0].map().rates
@@ -51,7 +50,7 @@ internal class DefaultTableViewModel @Inject constructor(
                         TableViewEffect.ShowTable(rates)
                     )
                 }
-
                 Completable.complete()
             }
+            .doOnComplete { effects.onNext(TableViewEffect.HideProgress) }
 }

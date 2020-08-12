@@ -10,15 +10,14 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import pl.piechaczek.dawid.core.data.extension.subscribeTo
-import pl.piechaczek.dawid.core.ui.screen.FragmentScreen
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
+import pl.piechaczek.dawid.core.ui.screen.FragmentScreen
 import pl.piechaczek.dawid.core.ui.widget.OnSegmentChangeListener
 import pl.piechaczek.dawid.core.ui.widget.SegmentedButtonGroup
-import pl.piechaczek.dawid.table.ui.*
+import pl.piechaczek.dawid.table.ui.R
 import pl.piechaczek.dawid.table.ui.databinding.FragmentSegmentedTableBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
 import pl.piechaczek.dawid.table.ui.table.TableFragment
-import pl.piechaczek.dawid.table.ui.table.TableViewState
 import timber.log.Timber
 
 class SegmentedTableFragment :

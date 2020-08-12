@@ -8,7 +8,6 @@ import pl.piechaczek.dawid.table.data.di.TableUseCaseModule
 import pl.piechaczek.dawid.table.ui.table.TableFragment
 import pl.piechaczek.dawid.table.ui.root.SegmentedTableFragment
 
-@TableScope
 @Component(
     dependencies = [CoreComponent::class],
     modules = [

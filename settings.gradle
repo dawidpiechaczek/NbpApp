@@ -1,3 +1,5 @@
+include ':details:ui'
+include ':details:data'
 include ':table:ui'
 include ':table:data'
 include ':core:ui'

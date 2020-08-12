@@ -11,6 +11,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import pl.piechaczek.dawid.core.data.extension.subscribeTo
+import pl.piechaczek.dawid.core.ui.navigation.MainNavigator
 import pl.piechaczek.dawid.core.ui.adapter.BaseSimpleAdapter
 import pl.piechaczek.dawid.core.ui.adapter.SimpleAdapterItem
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
@@ -18,18 +19,21 @@ import pl.piechaczek.dawid.core.ui.widget.OnSegmentChangeListener
 import pl.piechaczek.dawid.table.ui.databinding.FragmentTableBinding
 import pl.piechaczek.dawid.table.ui.databinding.ItemCurrencyBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
+import pl.piechaczek.dawid.table.ui.model.Rate
 import timber.log.Timber
+import javax.inject.Inject
 
 internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding>(
     TableViewModel::class.java
 ), OnSegmentChangeListener {
 
+    @Inject
+    lateinit var mainNavigator: MainNavigator
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
     lateinit var adapter: BaseSimpleAdapter<ItemCurrencyBinding, SimpleAdapterItem<ItemCurrencyBinding>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSegmentedButtonGroup()
         initEffectsAndState()
         initView()
     }
@@ -49,11 +53,7 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
         val tableType = arguments?.getChar(TABLE_TYPE)
         tableType?.let {
-            viewModel.onAction(
-                TableViewAction.ShowToast(
-                    it
-                )
-            )
+            viewModel.onAction(TableViewAction.GetInfoForTable(it))
                 .subscribeTo(compositeDisposable)
         }
     }
@@ -62,29 +62,30 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
     }
 
-    private fun initSegmentedButtonGroup() {
-
-    }
-
     private fun executeEffects(effect: TableViewEffect) {
         when (effect) {
-            is TableViewEffect.ShowTable -> {
-                val rates = effect.rates.map {
-                    CurrencyTableItem(
-                        it
-                    )
-                }
-                adapter.replace(rates)
-            }
+            is TableViewEffect.ShowTable -> showTable(effect.rates)
+            is TableViewEffect.ShowProgress -> showProgress()
+            is TableViewEffect.HideProgress -> hideProgress()
         }
     }
 
+    private fun hideProgress() {
+        binding.progress.visibility = View.GONE
+    }
+
+    private fun showProgress() {
+        binding.progress.visibility = View.VISIBLE
+    }
+
+    private fun showTable(rates: List<Rate>) {
+        adapter.replace(rates.map {
+            CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(it.currencyName, it.code) }
+        })
+    }
+
     override fun onSegmentChange(previousItemIndex: Int, newItemIndex: Int) {
-        viewModel.onAction(
-            TableViewAction.SegmentChanged(
-                newItemIndex
-            )
-        )
+        viewModel.onAction(TableViewAction.SegmentChanged(newItemIndex))
             .subscribeTo(compositeDisposable)
     }
 
