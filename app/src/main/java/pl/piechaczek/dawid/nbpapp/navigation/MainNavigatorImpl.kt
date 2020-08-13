@@ -52,11 +52,11 @@ class MainNavigatorImpl @Inject constructor(
         )
     }
 
-    override fun navigateToDetailsView(currencyName: String, currencyCode: String) {
+    override fun navigateToDetailsView(tableType: Char, currencyName: String, currencyCode: String) {
         replaceFragment(
             FragmentScreen(
                 DetailsFragment::class.java,
-                DetailsFragment.args(currencyName, currencyCode),
+                DetailsFragment.args(tableType, currencyName, currencyCode),
                 DetailsFragment::class.java.name
             )
         )

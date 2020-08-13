@@ -31,6 +31,7 @@ dependencies {
 
     api 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
+    testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-inline:${libVersions.mockitoCore}"
     testImplementation "org.mockito:mockito-core:${libVersions.mockitoCore}"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${libVersions.mockitoKotlin}"

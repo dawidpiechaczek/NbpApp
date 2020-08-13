@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -64,10 +65,15 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
     private fun executeEffects(effect: TableViewEffect) {
         when (effect) {
-            is TableViewEffect.ShowTable -> showTable(effect.rates)
+            is TableViewEffect.ShowTable -> showTable(effect.tableType, effect.rates)
             is TableViewEffect.ShowProgress -> showProgress()
             is TableViewEffect.HideProgress -> hideProgress()
+            is TableViewEffect.ShowToast -> showToast(effect.message)
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun hideProgress() {
@@ -78,9 +84,9 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
         binding.progress.visibility = View.VISIBLE
     }
 
-    private fun showTable(rates: List<Rate>) {
+    private fun showTable(tableType: Char, rates: List<Rate>) {
         adapter.replace(rates.map {
-            CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(it.currencyName, it.code) }
+            CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(tableType, it.currencyName, it.code) }
         })
     }
 

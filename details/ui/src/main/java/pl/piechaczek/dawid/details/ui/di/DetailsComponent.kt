@@ -4,12 +4,14 @@ import dagger.Component
 import pl.piechaczek.dawid.core.ui.di.CoreComponent
 import pl.piechaczek.dawid.core.ui.di.DaggerFragmentComponent
 import pl.piechaczek.dawid.core.ui.di.ViewModelFactoryModule
+import pl.piechaczek.dawid.details.data.di.DetailsUseCaseModule
 import pl.piechaczek.dawid.details.ui.root.DetailsFragment
 
 @Component(
     dependencies = [CoreComponent::class],
     modules = [
         DetailsModule::class,
+        DetailsUseCaseModule::class,
         ViewModelFactoryModule::class
     ]
 )

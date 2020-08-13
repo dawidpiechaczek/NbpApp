@@ -9,10 +9,10 @@ data class Rate(
     val rate: Float
 )
 
-
-fun RateModel.map(effectiveDate: String) = Rate(
-    date = effectiveDate,
-    currencyName = currency,
-    code = code,
-    rate = mid
-)
+fun RateModel.map(effectiveDate: String) =
+    Rate(
+        date = effectiveDate,
+        currencyName = currency,
+        code = code,
+        rate = mid
+    )
