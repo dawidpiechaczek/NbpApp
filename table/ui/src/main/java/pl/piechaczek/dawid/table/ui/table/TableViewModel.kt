@@ -16,11 +16,10 @@ internal abstract class TableViewModel : ViewModel() {
 }
 
 internal class DefaultTableViewModel @Inject constructor(
+    private val effects: PublishSubject<TableViewEffect>,
+    private val state: BehaviorSubject<TableViewState>,
     private val tableUseCase: TableUseCase
 ) : TableViewModel() {
-
-    private val effects = PublishSubject.create<TableViewEffect>()
-    private val state = BehaviorSubject.create<TableViewState>()
 
     override fun observeEffects(): Observable<TableViewEffect> = effects.hide()
 

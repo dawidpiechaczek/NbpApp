@@ -13,6 +13,7 @@ import pl.piechaczek.dawid.table.ui.root.SegmentedTableFragment
     modules = [
         TableModule::class,
         TableUseCaseModule::class,
+        TableViewModelModule::class,
         ViewModelFactoryModule::class
     ]
 )

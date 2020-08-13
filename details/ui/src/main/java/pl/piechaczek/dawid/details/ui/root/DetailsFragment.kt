@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -12,10 +13,13 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.LocalDate
 import pl.piechaczek.dawid.core.data.extension.subscribeTo
+import pl.piechaczek.dawid.core.ui.adapter.BaseSimpleAdapter
+import pl.piechaczek.dawid.core.ui.adapter.SimpleAdapterItem
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
 import pl.piechaczek.dawid.core.ui.dialog.CalendarDialog
 import pl.piechaczek.dawid.core.ui.dialog.CalendarDialogCallback
 import pl.piechaczek.dawid.details.ui.databinding.FragmentDetailsBinding
+import pl.piechaczek.dawid.details.ui.databinding.ItemRateBinding
 import pl.piechaczek.dawid.details.ui.di.ComponentProvider
 import pl.piechaczek.dawid.details.ui.model.Rate
 import timber.log.Timber
@@ -26,6 +30,7 @@ const val CALENDAR_END_DATE = 2222
 class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>
     (DetailsViewModel::class.java), CalendarDialogCallback {
 
+    lateinit var adapter: BaseSimpleAdapter<ItemRateBinding, SimpleAdapterItem<ItemRateBinding>>
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +58,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>
             viewModel.onAction(DetailsViewAction.OpenCalendarDialog(CALENDAR_END_DATE))
                 .subscribeTo(compositeDisposable)
         }
+        adapter = BaseSimpleAdapter()
+        binding.rates.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+        binding.rates.adapter = adapter
     }
 
     private fun openCalendarDialog(date: LocalDate?, requestId: Int) {
@@ -118,7 +129,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>
     }
 
     private fun showRates(rates: List<Rate>) {
-        showToast(rates.toString())
+        adapter.replace(rates.map {
+            RateItem(it)
+        })
     }
 
     private fun hideProgress() {
