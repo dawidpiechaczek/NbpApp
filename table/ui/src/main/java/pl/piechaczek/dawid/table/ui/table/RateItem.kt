@@ -1,7 +1,6 @@
 package pl.piechaczek.dawid.table.ui.table
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import pl.piechaczek.dawid.core.ui.adapter.SimpleAdapterItem
 import pl.piechaczek.dawid.table.ui.R

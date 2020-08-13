@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
 import pl.piechaczek.dawid.core.ui.databinding.DialogCalendarBinding
 import timber.log.Timber
+
+const val dateFormat = "yyyy-MM-dd"
 
 open class CalendarDialog : DialogFragment() {
     internal lateinit var callback: CalendarDialogCallback
@@ -33,22 +34,21 @@ open class CalendarDialog : DialogFragment() {
         val onDateChangeListener: DatePicker.OnDateChangedListener = OnDateChangeListenerImpl()
 
         arguments?.let { args ->
-            val model = args.getString(ARG_DATA)
-            if (model == null) {
-                val instant: Instant = Instant.parse(model)
-                val date = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+            val date = args.getString(ARG_DATA)
+            if (date != null) {
+                val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(dateFormat))
                 binding.calendar.init(
-                    date.year,
-                    date.monthValue,
-                    date.dayOfMonth,
+                    localDate.year,
+                    localDate.monthValue,
+                    localDate.dayOfMonth,
                     onDateChangeListener
                 )
             } else {
-                val date = LocalDateTime.now()
+                val today = LocalDate.now()
                 binding.calendar.init(
-                    date.year,
-                    date.monthValue,
-                    date.dayOfMonth,
+                    today.year,
+                    today.monthValue - 1,
+                    today.dayOfMonth,
                     onDateChangeListener
                 )
             }
@@ -79,7 +79,7 @@ open class CalendarDialog : DialogFragment() {
         ) {
             callback.onDateSelected(
                 arguments?.getInt(ARG_REQUEST_ID)!!,
-                LocalDateTime.of(year, monthOfYear, dayOfMonth, 0, 0)
+                LocalDate.of(year, monthOfYear, dayOfMonth)
             )
             dismiss()
         }
@@ -91,10 +91,12 @@ open class CalendarDialog : DialogFragment() {
         internal const val ARG_REQUEST_ID = "ARG_REQUEST_ID"
 
         @JvmStatic
-        fun newInstance(data: String, requestId: Int = 0): CalendarDialog {
+        fun newInstance(date: LocalDate?, requestId: Int = 0): CalendarDialog {
             return CalendarDialog().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_DATA, data)
+                    date?.let {
+                        putString(ARG_DATA, it.format(DateTimeFormatter.ofPattern(dateFormat)))
+                    }
                     putInt(ARG_REQUEST_ID, requestId)
                 }
             }
@@ -103,5 +105,5 @@ open class CalendarDialog : DialogFragment() {
 }
 
 interface CalendarDialogCallback {
-    fun onDateSelected(requestId: Int, date: LocalDateTime?)
+    fun onDateSelected(requestId: Int, date: LocalDate?)
 }

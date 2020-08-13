@@ -5,8 +5,8 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.piechaczek.dawid.table.data.usecase.TableUseCase
 import pl.piechaczek.dawid.table.ui.model.map
+import pl.piechaczek.dawid.table.data.usecase.TableUseCase
 import javax.inject.Inject
 
 internal abstract class TableViewModel : ViewModel() {
@@ -28,7 +28,7 @@ internal class DefaultTableViewModel @Inject constructor(
 
     override fun onAction(action: TableViewAction): Completable =
         when (action) {
-            is TableViewAction.GetInfoForTable -> showToast(action.tableType)
+            is TableViewAction.GetInfoForTable -> getInfoForTable(action.tableType)
             is TableViewAction.SegmentChanged -> changeSegment(action.newItemIndex)
         }
 
@@ -40,15 +40,17 @@ internal class DefaultTableViewModel @Inject constructor(
         )
     }
 
-    private fun showToast(tableType: Char): Completable =
+    private fun getInfoForTable(tableType: Char): Completable =
         tableUseCase.getTable(tableType)
             .doOnSubscribe { effects.onNext(TableViewEffect.ShowProgress) }
             .flatMapCompletable {
                 if (it.isNotEmpty()) {
                     val rates = it[0].map().rates
                     effects.onNext(
-                        TableViewEffect.ShowTable(rates)
+                        TableViewEffect.ShowTable(it[0].table, rates)
                     )
+                } else {
+                    effects.onNext(TableViewEffect.ShowToast("Tabela jest pusta"))
                 }
                 Completable.complete()
             }

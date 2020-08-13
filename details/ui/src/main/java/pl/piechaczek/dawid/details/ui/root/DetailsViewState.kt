@@ -1,5 +1,5 @@
 package pl.piechaczek.dawid.details.ui.root
 
-import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalDate
 
-data class DetailsViewState(val startDate: LocalDateTime? = null, val endDate: LocalDateTime? = null)
+data class DetailsViewState(val startDate: LocalDate? = null, val endDate: LocalDate? = null)

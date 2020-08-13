@@ -9,9 +9,10 @@ data class Table(
     val rates: List<Rate>
 )
 
-fun TableModel.map() = Table(
-    type = table,
-    number = no,
-    effectiveDate = effectiveDate,
-    rates = rates.map { it.map(effectiveDate) }
-)
+fun TableModel.map() =
+    Table(
+        type = table,
+        number = no,
+        effectiveDate = effectiveDate,
+        rates = rates.map { it.map(effectiveDate) }
+    )
