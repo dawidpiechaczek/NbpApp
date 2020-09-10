@@ -38,7 +38,7 @@ class MainNavigatorImpl @Inject constructor(
                 )
             }
 
-            fragmentTransaction.commit()
+            fragmentTransaction.commitAllowingStateLoss()
         }
     }
 

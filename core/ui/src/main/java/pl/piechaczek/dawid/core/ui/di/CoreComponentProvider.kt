@@ -8,8 +8,9 @@ object CoreComponentProvider {
 
     fun createComponent(mainNavigator: MainNavigator): CoreComponent {
 
-        component = DaggerCoreComponent.factory()
-            .create(mainNavigator)
+        if (!CoreComponentProvider::component.isInitialized)
+            component = DaggerCoreComponent.factory()
+                .create(mainNavigator)
 
         return component
     }
