@@ -28,16 +28,7 @@ internal class DefaultTableViewModel @Inject constructor(
     override fun onAction(action: TableViewAction): Completable =
         when (action) {
             is TableViewAction.GetInfoForTable -> getInfoForTable(action.tableType)
-            is TableViewAction.SegmentChanged -> changeSegment(action.newItemIndex)
         }
-
-    private fun changeSegment(newSegmentIndex: Int): Completable = Completable.fromCallable {
-        state.onNext(
-            state.value?.copy(selectedSegment = newSegmentIndex) ?: TableViewState(
-                newSegmentIndex
-            )
-        )
-    }
 
     private fun getInfoForTable(tableType: Char): Completable =
         tableUseCase.getTable(tableType)

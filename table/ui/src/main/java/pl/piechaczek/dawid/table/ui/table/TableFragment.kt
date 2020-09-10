@@ -12,11 +12,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import pl.piechaczek.dawid.core.data.extension.subscribeTo
-import pl.piechaczek.dawid.core.ui.navigation.MainNavigator
 import pl.piechaczek.dawid.core.ui.adapter.BaseSimpleAdapter
 import pl.piechaczek.dawid.core.ui.adapter.SimpleAdapterItem
 import pl.piechaczek.dawid.core.ui.base.BaseFragment
-import pl.piechaczek.dawid.core.ui.widget.OnSegmentChangeListener
+import pl.piechaczek.dawid.core.ui.navigation.MainNavigator
 import pl.piechaczek.dawid.table.ui.databinding.FragmentTableBinding
 import pl.piechaczek.dawid.table.ui.databinding.ItemCurrencyBinding
 import pl.piechaczek.dawid.table.ui.di.ComponentProvider
@@ -24,9 +23,8 @@ import pl.piechaczek.dawid.table.ui.model.Rate
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding>(
-    TableViewModel::class.java
-), OnSegmentChangeListener {
+internal class TableFragment :
+    BaseFragment<TableViewModel, FragmentTableBinding>(TableViewModel::class.java) {
 
     @Inject
     lateinit var mainNavigator: MainNavigator
@@ -86,13 +84,14 @@ internal class TableFragment : BaseFragment<TableViewModel, FragmentTableBinding
 
     private fun showTable(tableType: Char, rates: List<Rate>) {
         adapter.replace(rates.map {
-            CurrencyTableItem(it) { mainNavigator.navigateToDetailsView(tableType, it.currencyName, it.code) }
+            CurrencyTableItem(it) {
+                mainNavigator.navigateToDetailsView(
+                    tableType,
+                    it.currencyName,
+                    it.code
+                )
+            }
         })
-    }
-
-    override fun onSegmentChange(previousItemIndex: Int, newItemIndex: Int) {
-        viewModel.onAction(TableViewAction.SegmentChanged(newItemIndex))
-            .subscribeTo(compositeDisposable)
     }
 
     private fun initEffectsAndState() {
